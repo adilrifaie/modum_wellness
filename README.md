@@ -59,7 +59,7 @@ Proje, **YZM304 - Mobil Uygulama Geliştirme** dersi kapsamında React Native ve
 1. Repoyu klonla:
 
    ```sh
-   git clone https://github.com/adilrifaie/modum.git
+   git clone https://github.com/adilrifaie/modum_wellness.git
    cd modum
    ```
 
