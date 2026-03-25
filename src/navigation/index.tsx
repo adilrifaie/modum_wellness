@@ -5,6 +5,10 @@ import { Text } from 'react-native';
 import { Home } from './screens/Home';
 import { Login } from './screens/Login';
 import { Profile } from './screens/Profile';
+import { FizikselScreen } from './screens/FizikselScreen';
+import { StresScreen } from './screens/StresScreen';
+import { QuizScreen } from './screens/QuizScreen';
+import { RuhsalScreen } from './screens/RuhsalScreen';
 import { Settings } from './screens/Settings';
 import { Updates } from './screens/Updates';
 
@@ -46,6 +50,7 @@ const HomeTabs = createBottomTabNavigator({
         ),
       },
     },
+
   },
 });
 
@@ -58,6 +63,22 @@ const RootStack = createNativeStackNavigator({
     HomeTabs: {
       screen: HomeTabs,
       options: { headerShown: false },
+    },
+    RuhsalScreen: {
+      screen: RuhsalScreen,
+      options: { title: 'Ruhsal Destek', headerShown: true },
+    },
+    FizikselScreen: {
+      screen: FizikselScreen,
+      options: { title: 'Fiziksel Destek', headerShown: true },
+    },
+    StresScreen: {
+      screen: StresScreen,
+      options: { title: 'Stres Azaltma', headerShown: true },
+    },
+    QuizScreen: {
+      screen: QuizScreen,
+      options: { title: 'Quiz', headerShown: true },
     },
   },
 });

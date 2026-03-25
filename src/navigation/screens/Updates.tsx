@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect, useState } from 'react';
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const EXERCISES = [
   { label: '10 Şınav', emoji: '💪', points: 10, celebration: 'Harika! Kolların güçleniyor! 💪' },
@@ -18,9 +19,16 @@ export function Updates() {
   const [score, setScore] = useState(0);
   const [badgeShown, setBadgeShown] = useState(false);
 
+  useEffect(() => {
+    AsyncStorage.getItem('toplamPuan').then((val) => {
+      if (val !== null) setScore(Number(val));
+    });
+  }, []);
+
   const handleExercise = (exercise: (typeof EXERCISES)[0]) => {
     const newScore = score + exercise.points;
     setScore(newScore);
+    AsyncStorage.setItem('toplamPuan', String(newScore));
 
     if (newScore > 50 && !badgeShown) {
       setBadgeShown(true);

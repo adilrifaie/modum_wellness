@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type ProfileData = {
@@ -10,20 +11,25 @@ type ProfileData = {
 };
 
 export function Profile() {
+  const navigation = useNavigation();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [toplamPuan, setToplamPuan] = useState(0);
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
-  const loadProfile = async () => {
-    const ogrenciNo = await AsyncStorage.getItem('ogrenciNo');
-    const yas = await AsyncStorage.getItem('yas');
-    const cinsiyet = await AsyncStorage.getItem('cinsiyet');
-    setProfile({ ogrenciNo, yas, cinsiyet });
-    setLoading(false);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      const loadData = async () => {
+        const ogrenciNo = await AsyncStorage.getItem('ogrenciNo');
+        const yas = await AsyncStorage.getItem('yas');
+        const cinsiyet = await AsyncStorage.getItem('cinsiyet');
+        const puan = await AsyncStorage.getItem('toplamPuan');
+        setProfile({ ogrenciNo, yas, cinsiyet });
+        setToplamPuan(puan !== null ? Number(puan) : 0);
+        setLoading(false);
+      };
+      loadData();
+    }, [])
+  );
 
   const handleLogout = () => {
     Alert.alert('Çıkış Yap', 'Hesabından çıkmak istediğinden emin misin?', [
@@ -33,7 +39,7 @@ export function Profile() {
         style: 'destructive',
         onPress: async () => {
           await AsyncStorage.clear();
-          setProfile({ ogrenciNo: null, yas: null, cinsiyet: null });
+          navigation.getParent()?.reset({ index: 0, routes: [{ name: 'Login' as never }] });
         },
       },
     ]);
@@ -78,7 +84,7 @@ export function Profile() {
         {/* Egzersiz Puanı */}
         <View style={styles.scoreCard}>
           <Text style={styles.scoreLabel}>Toplam Egzersiz Puanı</Text>
-          <Text style={styles.scoreValue}>0</Text>
+          <Text style={styles.scoreValue}>{toplamPuan}</Text>
         </View>
 
         {/* Çıkış Yap */}

@@ -1,5 +1,6 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const WELLNESS_OPTIONS = [
   {
@@ -23,7 +24,23 @@ const WELLNESS_OPTIONS = [
 ];
 
 export function Settings() {
+  const navigation = useNavigation();
+
   const handlePress = (option: (typeof WELLNESS_OPTIONS)[0]) => {
+    if (option.label === 'Ruhsal') {
+      navigation.navigate('RuhsalScreen' as never);
+      return;
+    }
+    if (option.label === 'Fiziksel') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (navigation as any).navigate('FizikselScreen');
+      return;
+    }
+    if (option.label === 'Stres Azaltma') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (navigation as any).navigate('StresScreen');
+      return;
+    }
     Alert.alert(option.emoji + ' ' + option.label, option.message, [
       { text: 'Harika, teşekkürler!', style: 'default' },
     ]);
