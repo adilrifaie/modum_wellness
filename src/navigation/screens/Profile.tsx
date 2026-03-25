@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -39,7 +39,7 @@ export function Profile() {
         style: 'destructive',
         onPress: async () => {
           await AsyncStorage.clear();
-          navigation.getParent()?.reset({ index: 0, routes: [{ name: 'Login' as never }] });
+          navigation.getParent()?.dispatch(CommonActions.reset({ index: 0, routes: [{ name: 'Login'}] }));
         },
       },
     ]);
